@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="mapbox/mapbox-gl.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Interactive Cities</title>
+    </head>
+    <body>
+        <div id="map">
+            <nav id="menu"></nav>
+              <div id="distance" class="distance-container"></div>
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="./mapbox/mapbox-gl.js"></script>
+        <script src="data/cities_1.js"></script>
+<script src="./mapbox/style.js"></script>
+<script src="./js/Autolinker.min.js"></script>
+<script>
+var map = new mapboxgl.Map({
+ container: 'map',
+ style: styleJSON,
+ center: [-11.499251363456592,42.90225478483868],
+ zoom: 4,
+ bearing: 360.0,
+ attributionControl: false
+});
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+map.addControl(new mapboxgl.AttributionControl({
+    customAttribution: '<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://github.com/mapbox/mapbox-gl-js" target="_blank">Mapbox GL JS</a> &middot; <a href="https://qgis.org" target="_blank">QGIS</a>',
+    compact: false
+}));
+var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+
+map.on('click', 'lyr_cities_1_0', function (e) {
+    var description = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (e.features[0].properties['Name'] !== null ? autolinker.link(e.features[0].properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name (ASCII)</th>\
+                        <td>' + (e.features[0].properties['Name (ASCII)'] !== null ? autolinker.link(e.features[0].properties['Name (ASCII)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Is Capital ?</th>\
+                        <td>' + (e.features[0].properties['Is Capital ?'] !== null ? autolinker.link(e.features[0].properties['Is Capital ?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Is World City ?</th>\
+                        <td>' + (e.features[0].properties['Is World City ?'] !== null ? autolinker.link(e.features[0].properties['Is World City ?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Is Megacity ?</th>\
+                        <td>' + (e.features[0].properties['Is Megacity ?'] !== null ? autolinker.link(e.features[0].properties['Is Megacity ?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Country</th>\
+                        <td>' + (e.features[0].properties['Country'] !== null ? autolinker.link(e.features[0].properties['Country'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Province</th>\
+                        <td>' + (e.features[0].properties['Province'] !== null ? autolinker.link(e.features[0].properties['Province'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Maximum Population</th>\
+                        <td>' + (e.features[0].properties['Maximum Population'] !== null ? autolinker.link(e.features[0].properties['Maximum Population'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Minimum Population</th>\
+                        <td>' + (e.features[0].properties['Minimum Population'] !== null ? autolinker.link(e.features[0].properties['Minimum Population'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Other Population</th>\
+                        <td>' + (e.features[0].properties['Other Population'] !== null ? autolinker.link(e.features[0].properties['Other Population'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name of Megacity</th>\
+                        <td>' + (e.features[0].properties['Name of Megacity'] !== null ? autolinker.link(e.features[0].properties['Name of Megacity'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name of Region</th>\
+                        <td>' + (e.features[0].properties['Name of Region'] !== null ? autolinker.link(e.features[0].properties['Name of Region'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Minimum Area (km^2)</th>\
+                        <td>' + (e.features[0].properties['Minimum Area (km^2)'] !== null ? autolinker.link(e.features[0].properties['Minimum Area (km^2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Maximum Area (km^2)</th>\
+                        <td>' + (e.features[0].properties['Maximum Area (km^2)'] !== null ? autolinker.link(e.features[0].properties['Maximum Area (km^2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Minimum Area (mile^2)</th>\
+                        <td>' + (e.features[0].properties['Minimum Area (mile^2)'] !== null ? autolinker.link(e.features[0].properties['Minimum Area (mile^2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Maximum Area (mile^2)</th>\
+                        <td>' + (e.features[0].properties['Maximum Area (mile^2)'] !== null ? autolinker.link(e.features[0].properties['Maximum Area (mile^2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Minimum Residence per km^2</th>\
+                        <td>' + (e.features[0].properties['Minimum Residence per km^2'] !== null ? autolinker.link(e.features[0].properties['Minimum Residence per km^2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Maximum Residence per km^2</th>\
+                        <td>' + (e.features[0].properties['Maximum Residence per km^2'] !== null ? autolinker.link(e.features[0].properties['Maximum Residence per km^2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Minimum Residence per mile^2</th>\
+                        <td>' + (e.features[0].properties['Minimum Residence per mile^2'] !== null ? autolinker.link(e.features[0].properties['Minimum Residence per mile^2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Maximum Residence per mile^2</th>\
+                        <td>' + (e.features[0].properties['Maximum Residence per mile^2'] !== null ? autolinker.link(e.features[0].properties['Maximum Residence per mile^2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Timezone</th>\
+                        <td>' + (e.features[0].properties['Timezone'] !== null ? autolinker.link(e.features[0].properties['Timezone'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>'
+
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(description)
+        .addTo(map);
+});
+
+// Change the cursor to a pointer when the mouse is over the places layer.
+map.on('mouseenter', 'lyr_cities_1_0', function () {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'lyr_cities_1_0', function () {
+    map.getCanvas().style.cursor = '';
+});
+</script>
+    </body>
+</html>
